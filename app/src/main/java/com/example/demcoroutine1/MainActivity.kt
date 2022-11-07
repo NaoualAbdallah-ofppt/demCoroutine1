@@ -22,26 +22,30 @@ class MainActivity : AppCompatActivity() {
             val int =Intent(applicationContext,testActivity::class.java)
             startActivity(int)
         }
-        Log.i(montag, Thread.currentThread().name)
-       GlobalScope.launch(Dispatchers.IO) {
-            Log.i(montag, "Coroutine1")
-            fctlourde()
-        }
+        //Log.i(montag, Thread.currentThread().name)
+      val J :Job= GlobalScope.launch(Dispatchers.IO) {
 
-        //Thread.sleep(10000)
+              Log.i(montag, "Coroutine1")
+              fctlourde()
+
+        }
         runBlocking {
-            delay(10000)
-            Log.i(montag, "Je suis thread main")
-            Log.i(montag, "Je suis thread main après 10 s")
+           delay (3000)
+            J.cancel()
+
         }
 
+        if (!J.isActive) {
+            Log.i(montag,"non active")
+        }
+        Log.i(montag, "Je suis thread main")
 
     }
     suspend fun fctlourde() {
         //on va essayer de simuler une action lourde qui a besoin de
         //10s pour s'exécuter
         // en retardant la coroutine
-        for (i in 1..100)
+        for (i in 1..20)
         {    delay(1000L)
         //delay ne peut être utilisée qu'avec des méthode suspend
         Log.i(montag,"Tour : " + i)
