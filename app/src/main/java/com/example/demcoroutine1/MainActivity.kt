@@ -16,25 +16,25 @@ class MainActivity : AppCompatActivity() {
         txt=findViewById(R.id.txt) as TextView
         Log.i(montag, Thread.currentThread().name)
         GlobalScope.launch(Dispatchers.IO) {
-            Log.i(montag, "Coroutine1")
-            Log.i(montag,fctlourde())
+            Log.i(montag, "Coroutine")
+
+            var data1= async { fctlourde() }
+            var data2=async{fcttreslourde()}
+            //pour exécuter ces deux méthodes en parallèle
+            //le retour n'est pas un String c'est un deferred String
+            //c'est pourquoi on a besoin d'utiliser await
             withContext(Dispatchers.Main)
             {
-                txt.text = "fct lourde"
+                val txt1=findViewById(R.id.txt) as TextView
+                txt1.text = data1.await()
             }
-
-        }
-        GlobalScope.launch(Dispatchers.IO) {
-            Log.i(montag, "Coroutine2")
-            Log.i(montag,fcttreslourde())
             withContext(Dispatchers.Main)
             {
-                txt.text = "fct très lourde"
+                val txt2 = findViewById(R.id.txt) as TextView
+                txt2.text = data2.await()
             }
         }
-
-
-        Log.i(montag, "Je suis thread main")
+       Log.i(montag, "Je suis thread main")
 txt.text="Hello main"
     }
     suspend fun fctlourde():String
