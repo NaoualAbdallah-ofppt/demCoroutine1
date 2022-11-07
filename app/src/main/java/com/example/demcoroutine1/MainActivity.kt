@@ -23,23 +23,25 @@ class MainActivity : AppCompatActivity() {
             startActivity(int)
         }
         Log.i(montag, Thread.currentThread().name)
-        GlobalScope.launch(Dispatchers.IO) {
+       GlobalScope.launch(Dispatchers.IO) {
             Log.i(montag, "Coroutine1")
             fctlourde()
+        }
 
-
+        //Thread.sleep(10000)
+        runBlocking {
+            delay(10000)
+            Log.i(montag, "Je suis thread main")
+            Log.i(montag, "Je suis thread main après 10 s")
         }
 
 
-
-        Log.i(montag, "Je suis thread main")
-txt.text="Hello main"
     }
     suspend fun fctlourde() {
         //on va essayer de simuler une action lourde qui a besoin de
         //10s pour s'exécuter
         // en retardant la coroutine
-        for (i in 1..1000)
+        for (i in 1..100)
         {    delay(1000L)
         //delay ne peut être utilisée qu'avec des méthode suspend
         Log.i(montag,"Tour : " + i)
